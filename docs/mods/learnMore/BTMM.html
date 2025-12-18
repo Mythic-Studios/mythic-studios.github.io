@@ -93,6 +93,39 @@
             position: sticky;
             top: 80px;
             height: fit-content;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            padding: 1rem 0.5rem;
+            width: 60px;
+        }
+
+        .sidebar.collapsed h4,
+        .sidebar.collapsed ul {
+            display: none;
+        }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-sidebar:hover {
+            color: #3dd6d0;
+        }
+
+        .sidebar.collapsed .toggle-sidebar {
+            margin-bottom: 0;
         }
 
         .sidebar h4 {
@@ -210,6 +243,23 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 2rem;
+                width: 100% !important;
+            }
+
+            .sidebar.collapsed {
+                padding: 1rem;
+                width: 100% !important;
+            }
+
+            .sidebar.collapsed h4,
+            .sidebar.collapsed ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+
+            .sidebar.collapsed h4 {
+                display: block;
             }
 
             .content {
@@ -227,24 +277,12 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const sidebarLinks = document.querySelectorAll('.sidebar a');
-            
-            function updateActiveLink() {
-                const currentHash = window.location.hash || '#overview';
-                sidebarLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === currentHash) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-            
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', updateActiveLink);
+            const toggleButton = document.querySelector('.toggle-sidebar');
+            const sidebar = document.querySelector('.sidebar');
+
+            toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
             });
-            
-            window.addEventListener('hashchange', updateActiveLink);
-            updateActiveLink();
         });
     </script>
 </head>
@@ -267,6 +305,7 @@
     <div class="wiki-container">
         <!-- Sidebar -->
         <aside class="sidebar">
+            <button class="toggle-sidebar" title="Toggle sidebar">←</button>
             <h4>Getting Started</h4>
             <ul>
                 <li><a href="#overview" class="active">Overview</a></li>
