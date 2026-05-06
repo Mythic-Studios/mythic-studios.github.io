@@ -235,6 +235,117 @@
             box-shadow: 0 4px 12px rgba(61, 214, 99, 0.4);
         }
 
+        .about-section,
+        .services-section,
+        .blog-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 3rem 2rem;
+        }
+
+        .about-section p {
+            max-width: 900px;
+            margin: 0 auto;
+            color: #d4d4d4;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .about-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .service-grid,
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card,
+        .blog-card {
+            background-color: #252525;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .service-image,
+        .blog-card .card-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #2a2a2a;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.4rem;
+        }
+
+        .service-image img,
+        .blog-card .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-card h3,
+        .blog-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .service-card p,
+        .blog-card p {
+            color: #c1c1c1;
+            margin-bottom: 1.25rem;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        .service-button,
+        .blog-card a {
+            background-color: #3dd6d0;
+            color: #1e1e1e;
+            padding: 0.85rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .service-button:hover,
+        .blog-card a:hover {
+            background-color: #2bc4be;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(61, 214, 208, 0.25);
+        }
+
+        .blog-section h2,
+        .services-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .blog-section p {
+            text-align: center;
+            color: #b0b0b0;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             nav {
@@ -290,5 +401,34 @@
     <section class="hero">
         <h1>Homepage</h1>
         <p>Everything you need to know about our studio</p>
+    </section>
+
+    <section class="about-section">
+        <h2>About Mythic Goose Studios</h2>
+        <p>Mythic Goose Studios is a passionate team of developers, artists, and storytellers dedicated to creating immersive mods and indie game experiences. Founded with the vision of pushing the boundaries of creativity in gaming, we specialize in crafting content that resonates with players who crave innovative worlds, compelling narratives, and cutting-edge gameplay mechanics.</p>
+        <p>Our mission is to build community-focused content that is easy to discover, fun to share, and designed to spark new adventures. Whether through intricate mods that expand existing games or original indie titles that stand on their own, we strive to deliver high-quality experiences that foster creativity and connection within the gaming community.</p>
+        <p>At Mythic Goose Studios, we believe in the power of imagination and the joy of shared experiences. Join us as we continue to explore new horizons in gaming and modding.</p>
+    </section>
+
+    <section class="services-section">
+        <h2>What We Do</h2>
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="images/game/game1.png" alt="Game Development">
+                </div>
+                <h3>Game Development</h3>
+                <p>Designing original games with polished visuals, engaging mechanics, and story-driven levels.</p>
+                <a href="#" class="service-button">More Info</a>
+            </div>
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="images/mods/mod1.png" alt="Mod Creation">
+                </div>
+                <h3>Mod Creation</h3>
+                <p>Building custom mods that add fresh content, new features, and expanded gameplay for fans.</p>
+                <a href="#" class="service-button">More Info</a>
+            </div>
+        </div>
     </section>
 </html>
