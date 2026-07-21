@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mythic Goose Studios - Mods</title>
+    <title>Mythic Goose Studios - General Use Series</title>
     <link rel="icon" type="image/png" href="../../images/mythic_goose_studio.png">
     <style>
         * {
@@ -210,8 +210,8 @@
             box-shadow: 0 4px 12px rgba(61, 214, 208, 0.4);
         }
 
-        .series {
-            background-color: #1f8dcc;
+        .modrinth {
+            background-color: #1fcc62;
             color: #1e1e1e;
             padding: 0.8rem 2rem;
             border: none;
@@ -229,10 +229,35 @@
             max-width: 90%;
         }
 
-        .series:hover {
-            background-color: #43b9c9;
+        .modrinth:hover {
+            background-color: #43c959;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(61, 191, 214, 0.4);
+            box-shadow: 0 4px 12px rgba(61, 214, 99, 0.4);
+        }
+
+        .curseforge {
+            background-color: rgb(175, 87, 44);
+            color: #1e1e1e;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            margin: 0.5rem auto;
+            width: 250px;
+            max-width: 90%;
+        }
+
+        .curseforge:hover {
+            background-color: rgb(251, 125, 63);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 125, 63, 0.4);
         }
 
         /* Responsive */
@@ -273,22 +298,22 @@
     <nav>
         <div class="logo">
             <div class="logo-icon">
-                <img src="../images/mythic_goose_studio.png" alt="Logo">
+                <img src="../../../images/mythic_goose_studio.png" alt="Logo">
             </div>
             <span>Mythic Goose Studios</span>
         </div>
         <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../mods/mods.html">Our Mods</a></li>
-            <li><a href="../games/games.html">Our Games</a></li>
+            <li><a href="https://mythic-studios.github.io">Home</a></li>
+            <li><a href="../../">Our Mods</a></li>
+            <li><a href="../../games/games.html">Our Games</a></li>
             <li><a href="https://discord.gg/2YQ3fdYESC" class="discord-btn">Discord</a></li>
         </ul>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Our Minecraft Mods</h1>
-        <p>Our current maintained and up-to-date Minecraft mods</p>
+        <h1>Faithful Companions</h1>
+        <p>Continued Support for a list of faithful companions in your Adventures</p>
     </section>
 
     <!-- Mods Grid -->
@@ -296,29 +321,23 @@
         <div class="mods-grid">
             <div class="mod-card">
                 <div class="mod-image">
-                    <img src="../images/mythic_goose_studio.png" alt="General Use Mods">
+                    <img src="../../../images/mods/faithful_companions_ravens.png" alt="Faithful Companions: Ravens">
                 </div>
-                <h3>General Use Mods</h3>
-                <p>Our publicly released Minecraft mods for general use</p>
-                <a class="series" href="general_use/general.html">View the Mod Series</a>
+                <h3>Faithful Companions: Ravens</h3>
+                <p>Ravens to deliver messages</p>
+                <a class="modrinth" href="https://modrinth.com/mod/companions-ravens" target="_blank">Play on Modrinth</a>
+                <a class="curseforge" href="https://www.curseforge.com/minecraft/mc-mods/faithful-companions-ravens" target="_blank">Play on CurseForge</a>
             </div>
 
             <div class="mod-card">
                 <div class="mod-image">
-                    <img src="../images/challenge_series.png" alt="Challenge Series">
+                    <img src="../../../images/mods/faithful_companions_flamerose.png" alt="Faithful Companions: Flamerose">
                 </div>
-                <h3>Challenge Series</h3>
-                <p>Mods designed for competitive play and challenges</p>
-                <a class="series" href="challenge_series/challenges.html">View the Mod Series</a>
-            </div>
-
-            <div class="mod-card">
-                <div class="mod-image">
-                    <img src="../images/video_series.png" alt="Video Series">
-                </div>
-                <h3>Video Series</h3>
-                <p>Mods related to our video series</p>
-                <button class="series">Coming Soon</button>
+                <h3>Faithful Companions: Flamerose</h3>
+                <p>A companion to protect you in combat and is so adorable!</p>
+                <!--https://modrinth.com/mod/companions-flamerose-->
+                <a class="modrinth" href="" target="_blank">Coming Soon</a>
+                <a class="curseforge" href="" target="_blank">Coming Soon</a>
             </div>
         </div>
     </section>
