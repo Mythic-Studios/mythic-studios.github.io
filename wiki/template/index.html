@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki</title>
+  <style>
+    :root {font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; color: #ffffff; background: #1e1e1e;}
+    body {margin: 0; padding: 0;}
+    .page {display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; gap: 1rem; padding: 1rem;}
+    @media (max-width: 900px) {.page {grid-template-columns: 1fr;}}
+    .sidebar {position: sticky; top: 0; align-self: start; background: #2a2a2a; border: 1px solid #333333; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
+    .sidebar h2 {margin-top: 0; font-size: .95rem; text-transform: uppercase; letter-spacing: .08em; color: #b0b0b0;}
+    .sidebar nav a {display: block; margin: .65rem 0; color: #ffffff; text-decoration: none;}
+    .sidebar nav a:hover {color: #3dd6d0; text-decoration: underline;}
+    .sidebar .divider {border: none; border-top: 1px dashed #444444; margin: 1rem 0;}
+    .sidebar .home-link {color: #3dd6d0; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: .9rem;}
+    .sidebar .home-link:hover {color: #2bc4be;}
+    .content {background: #252525; border: 1px solid #333333; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.25);}
+    .content h1, .content h2 {margin-top: 0;}
+    .content h2 {margin: 2rem 0 .75rem; font-size: 1.25rem; border-bottom: 1px solid #333333; padding-bottom: .35rem;}
+    .content p {margin: 1rem 0; color: #d4d4d4;}
+    a {color: #3dd6d0;}
+    a:hover {color: #2bc4be; text-decoration: underline;}
+    ul {padding-left: 1.25rem;}
+  </style>
+  <link rel="icon" type="image/png" href="../../images/mythic_goose_studio.png">
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <h2>Wiki Contents</h2>
+      <nav>
+        <a href="#overview">Overview</a>
+        <a href="#features">Features</a>
+        <a href="#modpack-support">Modpack Support</a>
+        <a href="#mod-developer-support">Mod Developer Support</a>
+      </nav>
+      <hr class="divider">
+      <a href="../" class="home-link">Return to Main Page</a>
+    </aside>
+    <main class="content">
+      <h1>Wiki Page System</h1>
+      <p>Use this page to organize documentation with sections, headers, and inline links. The layout is responsive and works on mobile devices by stacking the table of contents above the content on smaller screens.</p>
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>This wiki system includes a sidebar table of contents and content sections that are easy to navigate. Add paragraphs and links anywhere inside text using normal HTML markup like <a href="https://example.com">this example link</a>.</p>
+      </section>
+      <section id="getting-started">
+        <h2>Getting Started</h2>
+        <p>Start by editing this file and adding new sections with headings. Use anchor links in the sidebar to jump directly to each section.</p>
+        <p>For example, you can write a paragraph with an internal link to <a href="#features">the features section</a> or an external reference to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">HTML documentation</a>.</p>
+      </section>
+      <section id="features">
+        <h2>Features</h2>
+        <p>The page supports:</p>
+        <ul>
+          <li>Responsive layout for mobile and desktop</li>
+          <li>Clickable section headers in the navigation</li>
+          <li>Easy content updates with paragraphs and links</li>
+          <li>Simple styling for readability</li>
+        </ul>
+        <p>Add more sections by copying a section block and updating the id plus heading text.</p>
+      </section>
+      <section id="resources">
+        <h2>Resources</h2>
+        <p>Keep your wiki organized by grouping related topics under clear headings. Use links to connect to other documentation pages, assets, or external references.</p>
+        <p>If you want to add more help links, insert them inline like this: <a href="mailto:support@example.com">contact support</a>.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

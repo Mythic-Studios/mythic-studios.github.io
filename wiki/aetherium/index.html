@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki</title>
+  <style>
+    :root {font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; color: #ffffff; background: #1e1e1e;}
+    body {margin: 0; padding: 0;}
+    .page {display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; gap: 1rem; padding: 1rem;}
+    @media (max-width: 900px) {.page {grid-template-columns: 1fr;}}
+    .sidebar {position: sticky; top: 0; align-self: start; background: #2a2a2a; border: 1px solid #333333; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
+    .sidebar h2 {margin-top: 0; font-size: .95rem; text-transform: uppercase; letter-spacing: .08em; color: #b0b0b0;}
+    .sidebar nav a {display: block; margin: .65rem 0; color: #ffffff; text-decoration: none;}
+    .sidebar nav a:hover {color: #3dd6d0; text-decoration: underline;}
+    .sidebar .divider {border: none; border-top: 1px dashed #444444; margin: 1rem 0;}
+    .sidebar .home-link {color: #3dd6d0; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: .9rem;}
+    .sidebar .home-link:hover {color: #2bc4be;}
+    .content {background: #252525; border: 1px solid #333333; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.25);}
+    .content h1, .content h2 {margin-top: 0;}
+    .content h2 {margin: 2rem 0 .75rem; font-size: 1.25rem; border-bottom: 1px solid #333333; padding-bottom: .35rem;}
+    .content p {margin: 1rem 0; color: #d4d4d4;}
+    a {color: #3dd6d0;}
+    a:hover {color: #2bc4be; text-decoration: underline;}
+    ul {padding-left: 1.25rem;}
+  </style>
+
+  <link rel="icon" type="image/png" href="../../images/mythic_goose_studio.png">
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <h2>Wiki Contents</h2>
+      <nav>
+        <a href="#overview">Overview</a>
+        <a href="#features">Features</a>
+        <a href="#modpack-support">Modpack Support</a>
+        <a href="#mod-support">Mod Developer Support</a>
+      </nav>
+      <hr class="divider">
+      <a href="../" class="home-link">Return to Wiki Hub</a>
+    </aside>
+    <main class="content">
+      <h1>Aetherium</h1>
+      <p>A Fabric mod inspired by the idea of Equivalent Exchange, built with its own progression, balance, and economy. Adds a currency that can be made from items & blocks to create different items or blocks.</p>
+      <section id="overview">
+        <h2>Overview</h2>
+        <p><strong>Aetherium</strong> is a Fabric alternative to ProjectE, designed for <strong>Minecraft 26.2</strong> and future releases as development continues. Rather than recreating ProjectE, Aetherium introduces its own interpretation of item transmutation. Every item has an <strong>Aetherium Value</strong>, allowing it to be converted into a universal resource and back again. Unlike ProjectE, Aetherium focuses on a steeper progression.</p>
+      </section>
+      <section id="features">
+        <h2>Features</h2>
+        <p>To be Written</p>
+      </section>
+      <section id="modpack-support">
+        <h2>Modpack Support</h2>
+        <ol>
+          <li>Launch Minecraft once with Aetherium installed.</li>
+          <li>Close the game.</li>
+          <li>Navigate to <code>config/Aetherium/</code></li>
+          <li>Open <code>aetherium_values.json</code></li>
+          <li>Add or modify item values.</li>
+        </ol>
+
+        <pre><code>        {
+          "_comment": "item id : Aetherium value. Decimal values are supported.",
+          "minecraft:diamond": 30,
+          "modid:custom_item": 42.26
+        }</code></pre>
+
+      </section>
+      <section id="mod-support">
+        <h2>Mod Developer Support</h2>
+        <p>This is going to be the most detailed section, to provide the best info I can.</p>
+        <p>Section 1: The Basics of Use</p>
+
+        <ol>
+          <li>Add Modrinth Maven to your repositories</li>
+          <pre><code>repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+}</code></pre>
+
+          <li>Add Aetherium as a dependency using its latest version under dependencies</li>
+<pre><code>dependencies {
+    implementation "maven.modrinth:aetherium:mod_version-game_version"
+}</code></pre>
+
+          <li>Create a new class anywhere as long as you register it with your Main class. (Example Provided)</li>
+<pre><code>
+  package com.example.mod_id;
+
+import net.fabricmc.api.ModInitializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Aetherium implements ModInitializer {
+	public static final String MOD_ID = "mod_id";
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	@Override
+	public void onInitialize() {
+		LOGGER.info("Hello Fabric World!");
+
+		ModIdValuesInit.register();
+	}
+
+	public static Identifier id(String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
+	}
+}
+</code></pre>
+
+<pre><code>
+  package com.example.mod_id;
+
+  import org.mythic_goose.aetherium.api.*; // Wildcard import for all Aetherium API classes
+
+  public class ModIdValuesInit {
+    public static void register() {
+
+        Aeth naturalBase = Aeth.ofDecimalString("0.001");
+        AethValues.set(Items.GRASS_BLOCK, naturalBase); // example of a predefined value being applied to a vanilla block
+        AethValues.setTag(ItemTags.LEAVES, naturalBase); // same with item tags. Check AethValues for Documentation on all the methods available to you. 
+
+        // Custom values defined seperately from a hub of multiple things.
+        AethValues.setTag(ConventionalItemTags.OBSIDIANS, Aeth.ofDecimalString("149.992"));
+        AethValues.set(Items.DRAGON_EGG, Aeth.ofDecimalString("15750.578"));
+
+        // additionaly you can add ".multiply(2)" or ".divide(3)" to any Aeth value to multiply or divide it by a number. You can also use ".add()" and ".subtract()" to add or subtract Aeth values from each other. Check the Aeth class for more information on what you can do with Aeth values.
+    }
+  }
+</code></pre>  
+        </ol>
+
+        <p>Section 2: Additional Information</p>
+        <ol>
+          <li>Custom Item Tags can either be found locations provided below:</li>
+<pre><code>
+import net.minecraft.tags.ItemTags; // Minecraft's Provided Tags that are used by the game
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags; // Fabric's Provided Tags that Minecraft doesn't use
+import org.mythic_goose.aetherium.util.AetheriumItemTags; // Aetherium's Tags used to assist
+</code></pre>
+
+            <li>More Soon</li>
+        </ol>
+
+      </section>
+    </main>
+  </div>
+</body>
+</html>
