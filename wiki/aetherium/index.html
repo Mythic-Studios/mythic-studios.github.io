@@ -23,6 +23,29 @@
     a {color: #3dd6d0;}
     a:hover {color: #2bc4be; text-decoration: underline;}
     ul {padding-left: 1.25rem;}
+
+    .mod-dropdown summary {
+  cursor: pointer;
+  list-style: none;       /* removes default triangle marker */
+  padding: 4px 0;
+}
+
+.mod-dropdown summary::-webkit-details-marker {
+  display: none;          /* removes marker in Chrome/Safari */
+}
+
+.mod-dropdown summary::after {
+  content: " ▾";          /* custom arrow indicator */
+}
+
+.mod-dropdown[open] summary::after {
+  content: " ▴";
+}
+
+.mod-dropdown a {
+  display: block;
+  padding-left: 1em;      /* indent, since your text had manual spaces before */
+}
   </style>
 
   <link rel="icon" type="image/png" href="../../images/mythic_goose_studio.png">
@@ -31,12 +54,21 @@
   <div class="page">
     <aside class="sidebar">
       <h2>Wiki Contents</h2>
-      <nav>
-        <a href="#overview">Overview</a>
-        <a href="#features">Features</a>
-        <a href="#modpack-support">Modpack Support</a>
-        <a href="#mod-support">Mod Developer Support</a>
-      </nav>
+    <nav>
+      <a href="#overview">Overview</a>
+      <a href="#features">Features</a>
+      <a href="#modpack-support">Modpack Support</a>
+      <a href="#mod-support">Mod Developer Support</a>
+
+      <details class="mod-dropdown">
+        <summary><strong>Mod Developer Sections</strong></summary>
+        <a href="#section-1">Section 1: Setup and Applying Values</a>
+        <a href="#section-2">Section 2: Energy Charged Tools & Armor</a>
+        <a href="#section-3">Section 3: Coming Soon</a>
+        <a href="#section-4">Section 4: Coming Soon</a>
+        <a href="#section-5">Section 5: Additional Information</a>
+      </details>
+    </nav>
       <hr class="divider">
       <a href="../" class="home-link">Return to Wiki Hub</a>
     </aside>
@@ -71,7 +103,10 @@
       <section id="mod-support">
         <h2>Mod Developer Support</h2>
         <p>This is going to be the most detailed section, to provide the best info I can.</p>
-        <p>Section 1: The Basics of Use</p>
+
+        <section id="section-1">
+            <p>Section 1: Setup and Applying Values</p>
+        </section>
 
         <ol>
           <li>Add Modrinth Maven to your repositories</li>
@@ -89,9 +124,9 @@
     }
 }</code></pre>
 
-          <li>Add Aetherium as a dependency using its latest version under dependencies</li>
+          <li>Add Aetherium as a dependency using its latest version under dependencies (latest one provided)</li>
 <pre><code>dependencies {
-    implementation "maven.modrinth:aetherium:mod_version-game_version"
+    implementation "maven.modrinth:1CH4oLR3:9fOJaenF"
 }</code></pre>
 
           <li>Create a new class anywhere as long as you register it with your Main class. (Example Provided)</li>
@@ -141,7 +176,204 @@ public class Aetherium implements ModInitializer {
 </code></pre>  
         </ol>
 
-        <p>Section 2: Additional Information</p>
+
+        <section id="section-2">
+            <p>Section 2: Energy Charged Tools & Armor</p>
+        </section>
+
+        <p>In v0.3.0 Aetherium introduced a new system that adds custom tool and armor materials that work similar to vanilla materials.</p>
+        <p>This will be a guide to help mod developers set this up</p>
+
+        <p>
+            1. Custom Tools
+        </p>
+
+        <p>Create a class named 'ModToolMaterials' - or similar</p>
+
+
+<pre><code>
+package com.example.mod_id;
+
+import net.minecraft.tags.BlockTags;
+import org.mythic_goose.aetherium.api.energy_system.materials.ChargedToolMaterial;
+import org.mythic_goose.aetherium.api.Aeth;
+
+public class ModToolMaterials {
+    public static final ChargedToolMaterial EXAMPLE_MATERIAL = new ChargedToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 12.0F, 7.0F, 15,
+                10000, 1, 1000, Aeth.ofUnits(40));
+
+}
+</code></pre>  
+
+<p>Charged Tool Materials example on how the method works</p>
+<pre><code> EXAMPLE_MATERIAL = new ChargedToolMaterial(incorrectBlocksForDrops, baseSpeed, attackDamageBonus, enchantmentValue, maxCharge, chargePerUse, rechargeSegmentSize, rechargeSegmentCost);
+</code></pre> 
+
+<p>Segments are how much charge is gained per recharge using 'V' (Default Key), SegmentCost is how much each recharge cost in Aetherium.</p>
+
+<p>Heres how you create each tool using the example in Aetherium</p>
+
+<pre><code>
+  package org.mythic_goose.aetherium.init;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.*;
+import org.mythic_goose.aetherium.api.energy_system.materials.ChargedToolMaterial;
+import org.mythic_goose.aetherium.api.tools.ChargedAxeItem;
+import org.mythic_goose.aetherium.api.tools.ChargedHoeItem;
+import org.mythic_goose.aetherium.api.tools.ChargedShovelItem;
+import org.mythic_goose.aetherium.api.tools.ChargedToolItem;
+import org.mythic_goose.aetherium.registry.ItemRegistry;
+
+public class AetheriumItems extends ItemRegistry {
+
+    public static Item VOIDMASS_AXE;
+    public static Item VOIDMASS_PICKAXE;
+    public static Item VOIDMASS_SHOVEL;
+    public static Item VOIDMASS_SPEAR;
+    public static Item VOIDMASS_SWORD;
+    public static Item VOIDMASS_HOE;
+
+    public static void init() {
+
+        VOIDMASS_AXE = registerItem("voidmass_axe", properties -> new ChargedAxeItem(
+                ChargedToolMaterial.VOIDMASS, 6f, 8f,
+                properties.fireResistant().rarity(Rarity.RARE)));
+
+        VOIDMASS_SHOVEL = registerItem("voidmass_shovel", properties -> new ChargedShovelItem(
+                ChargedToolMaterial.VOIDMASS, 6f, -2.8f,
+                properties.fireResistant().rarity(Rarity.RARE)));
+
+        VOIDMASS_HOE = registerItem("voidmass_hoe", properties -> new ChargedHoeItem(
+                ChargedToolMaterial.VOIDMASS, 6f, -2.8f,
+                properties.fireResistant().rarity(Rarity.RARE)));
+
+        VOIDMASS_PICKAXE = registerItem("voidmass_pickaxe", properties -> new ChargedToolItem(
+                ChargedToolMaterial.VOIDMASS,
+                ChargedToolMaterial.VOIDMASS.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, 2.8f, 6f, 0f)
+                        .fireResistant().rarity(Rarity.RARE)));
+
+        VOIDMASS_SWORD = registerItem("voidmass_sword", properties -> new ChargedToolItem(
+                ChargedToolMaterial.VOIDMASS,
+                ChargedToolMaterial.VOIDMASS.applySwordProperties(properties, 6f, 12f)
+                        .fireResistant().rarity(Rarity.RARE)));
+
+        VOIDMASS_SPEAR = registerItem("voidmass_spear", properties -> new ChargedToolItem(
+                ChargedToolMaterial.VOIDMASS,
+                ChargedToolMaterial.VOIDMASS.applySpearProperties(properties,
+                                1.15F, 2.5F, 0.4F, 2.5F, 9.0F, 5.5F, 5.1F, 8.75F, 4.6F)
+                        .fireResistant().rarity(Rarity.RARE)));
+    }
+
+    public static ResourceKey<Item> getRK(Item item) {
+        return BuiltInRegistries.ITEM.getResourceKey(item).get();
+    }
+}
+
+</code></pre>  
+
+<p>ItemRegistry is how Aetherium registers its items. using the "registerItem" method</p>
+
+
+        <p>
+            2. Custom Armor
+        </p>
+
+        <p>Create a class named 'ModArmorMaterials' - or similar</p>
+
+
+<pre><code>
+package com.example.mod_id;
+
+import net.minecraft.tags.BlockTags;
+import org.mythic_goose.aetherium.api.energy_system.materials.ChargedArmorMaterial;
+import org.mythic_goose.aetherium.api.Aeth;
+
+public class ModArmorMaterials {
+    public static final ResourceKey<? extends Registry<EquipmentAsset>> REGISTRY_KEY =
+            ResourceKey.createRegistryKey(Identifier.withDefaultNamespace("equipment_asset"));
+
+    public static final ResourceKey<EquipmentAsset> EXAMPLE_KEY =
+            ResourceKey.create(REGISTRY_KEY, Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "example"));
+
+
+
+    public static final ChargedArmorMaterial EXAMPLE_MATERIAL = new ChargedArmorMaterial(
+                ArmorMaterials.makeDefense(7, 13, 18, 7, 23), // helmet, chestplate, leggings, boots, body
+                28, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.35F,
+                EXAMPLE_KEY,    // key
+                10000, 5,       // maxCharge, chargePerHit
+                1000, Aeth.ofUnits(40)); // rechargeSegmentSize, rechargeSegmentCost
+
+}
+</code></pre>  
+
+<P>Here another example of how to create a Charged Armor Material:</P>
+
+<pre><code>
+  package org.mythic_goose.aetherium.init;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.*;
+import org.mythic_goose.aetherium.api.energy_system.materials.ChargedArmorMaterial;
+import org.mythic_goose.aetherium.api.energy_system.armor.ChargedArmorItem;
+import org.mythic_goose.aetherium.registry.ItemRegistry;
+
+public class AetheriumItems extends ItemRegistry {
+
+    public static Item VOIDMASS_HELMET;
+    public static Item VOIDMASS_CHESTPLATE;
+    public static Item VOIDMASS_LEGGINGS;
+    public static Item VOIDMASS_BOOTS;
+
+    public static void init() {
+
+        VOIDMASS_HELMET = registerItem("voidmass_helmet", properties -> new ChargedArmorItem(
+                ChargedArmorMaterial.VOIDMASS,
+                ChargedArmorMaterial.VOIDMASS.applyArmorProperties(properties, ArmorType.HELMET)
+                        .rarity(Rarity.RARE).fireResistant().stacksTo(1)));
+
+        VOIDMASS_CHESTPLATE = registerItem("voidmass_chestplate", properties -> new ChargedArmorItem(
+                ChargedArmorMaterial.VOIDMASS,
+                ChargedArmorMaterial.VOIDMASS.applyArmorProperties(properties, ArmorType.CHESTPLATE)
+                        .rarity(Rarity.RARE).fireResistant().stacksTo(1)));
+
+        VOIDMASS_LEGGINGS = registerItem("voidmass_leggings", properties -> new ChargedArmorItem(
+                ChargedArmorMaterial.VOIDMASS,
+                ChargedArmorMaterial.VOIDMASS.applyArmorProperties(properties, ArmorType.LEGGINGS)
+                        .rarity(Rarity.RARE).fireResistant().stacksTo(1)));
+
+        VOIDMASS_BOOTS = registerItem("voidmass_boots", properties -> new ChargedArmorItem(
+                ChargedArmorMaterial.VOIDMASS,
+                ChargedArmorMaterial.VOIDMASS.applyArmorProperties(properties, ArmorType.BOOTS)
+                        .rarity(Rarity.RARE).fireResistant().stacksTo(1)));
+    }
+
+    public static ResourceKey<Item> getRK(Item item) {
+        return BuiltInRegistries.ITEM.getResourceKey(item).get();
+    }
+}
+
+</code></pre> 
+
+<p>Make sure to register your ModItems class to make this all work.</p>
+
+        <section id="section-3">
+            <p>Section 3: Coming Soon</p>
+        </section>
+
+        <section id="section-4">
+            <p>Section 4: Coming Soon</p>
+        </section>
+
+        <section id="section-5">
+            <p>Section 5: Additional Information</p>
+        </section>
+
         <ol>
           <li>Custom Item Tags can either be found locations provided below:</li>
 <pre><code>
