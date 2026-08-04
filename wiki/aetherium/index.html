@@ -124,10 +124,37 @@
     }
 }</code></pre>
 
-          <li>Add Aetherium as a dependency using its latest version under dependencies (latest one provided)</li>
+          <li>Add Aetherium as a dependency using its latest version under dependencies (latest version always provided)</li>
 <pre><code>dependencies {
-    implementation "maven.modrinth:1CH4oLR3:JjzzdTgW"
+    implementation "maven.modrinth:aetherium:<strong><span id="latest-version">latest_release</span></strong>"
 }</code></pre>
+
+<script>
+(async function () {
+  try {
+    const res = await fetch("https://api.modrinth.com/v2/project/aetherium/version", {
+      headers: {
+        // Modrinth asks for a distinct User-Agent, but browsers can't override this header client-side,
+        // so this works fine as-is for a public GET from a browser context.
+      }
+    });
+    if (!res.ok) throw new Error("Modrinth API error: " + res.status);
+    const versions = await res.json();
+    if (!versions.length) throw new Error("No versions found");
+
+    // versions[0] is the most recently published version
+    const latest = versions[0].version_number;
+
+    document.getElementById("latest-version").textContent = latest;
+    document.getElementById("latest-version-inline").textContent = latest;
+    document.getElementById("latest-version-text").textContent = latest;
+  } catch (err) {
+    console.error("Failed to fetch latest Aetherium version:", err);
+    // Leave the placeholders as-is on failure
+  }
+})();
+</script>
+          
 
           <li>Create a new class anywhere as long as you register it with your Main class. (Example Provided)</li>
 <pre><code>
