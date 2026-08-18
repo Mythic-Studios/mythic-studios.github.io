@@ -46,6 +46,8 @@
       <section id="overview">
         <h2>Overview</h2>
         <p> Amalgamation is a Library system that assists in various things. This is to prevent any possible overlap and issues with the code. This is all possible on the latest version (Currently 26.2)</p>
+        <p>You can find more documentation within the actual project files. Which you can access once you add it to your mod</p>
+      
       </section>
       <section id="support">
         <h2>Adding to your Mod</h2>
@@ -70,6 +72,13 @@
         <pre><code>dependencies {
     implementation "maven.modrinth:amalgamation-library:<strong><span id="latest-version">coming_soon</span></strong>"
 }</code></pre>
+
+        <p>Note: There is both a Fabric and a NeoForge version available. So replace '+fabric' or '+neoforge' with the appropriate suffix of your target modloader.</p>
+      
+        <li>Applying your MOD_ID to the Registry Classes</li>
+        <p>In order to use Amalgamation, you will need to apply your MOD_ID to all the registry classes. This is done by calling the following method in your main mod class:</p>
+        <pre><code>ModRegistry.MOD_ID = "your_mod_id";</code></pre>
+        <p>Note: This should be done in the constructor of your main mod class.</p>
       </section>
 
 <script>
@@ -106,14 +115,123 @@
 
       <section id="creative-tabs">
           <h2>Custom Creative Mode Tabs</h2>
-          <p>TBD</p>
+          <p>This cannot be explained in a simple form, so you will have to refer to the examples below. Each one shows how to make a colored section and a textured section.</p>
+
+          <p>Fabric Example:</p>
+
+          <pre><code>package com.example.examplemod.init;
+
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.CreativeModeTab;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionStyle;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionTabBuilder;
+
+public class ExampleCreativeModeTab {
+
+    public static CreativeModeTab EXAMPLE_TAB;
+
+    /** Call once from the testmod's entrypoint, after TestBlocks/TestItems are registered. */
+    public static void registerTestTab() {
+        SectionTabBuilder builder = SectionTabBuilder.create(
+                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "test_tab"))
+                .icon(ExampleItems.EXAMPLE_RUBY.get())
+                .title(Component.literal("Example Tab"))
+                .displaySection("colored_section" // renders like "itemGroup.mod_id.colored_section", SectionStyle.colored(0xFF97119f), output -> { // gets the color in hex and converts it to a color for the section (0xAARRGGBB)
+                    output.add(ExampleBlocks.TEST_ORE.get());
+                    output.add(ExampleItems.TEST_RUBY.get());
+                    output.add(ExampleItems.TEST_ORE_ITEM.get());
+                })
+                .displaySection("textured_section" // // renders like "itemGroup.mod_id.textured_section", SectionStyle.textured(), output -> { // get the texture found at "assets/examplemod/textures/gui/tab_overlay/textured_section.png" and uses it for the section. Size has to be 158x16 for the banner
+                    output.add(ExampleItems.TEST_RUBY.get());
+                });
+
+        EXAMPLE_TAB = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, builder.id(), builder.build());
+    }
+}
+          </code></pre>
+
+          <h3>NeoForge example:</h3>
+
+          <pre><code>package com.example.examplemod.init;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionStyle;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionTabBuilder;
+
+public class ExampleCreativeModeTab {
+
+    private static final DeferredRegister<CreativeModeTab> TABS =
+        DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ExampleMod.MOD_ID);
+    public static DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB =
+        TABS.register("example_tab", () -> builder.build());
+
+        SectionTabBuilder builder = SectionTabBuilder.create(
+                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "test_tab"))
+                .icon(ExampleItems.EXAMPLE_RUBY.get())
+                .title(Component.literal("Example Tab"))
+                .displaySection("colored_section" // renders like "itemGroup.mod_id.colored_section", SectionStyle.colored(0xFF97119f), output -> { // gets the color in hex and converts it to a color for the section (0xAARRGGBB)
+                    output.add(ExampleBlocks.TEST_ORE.get());
+                    output.add(ExampleItems.TEST_RUBY.get());
+                    output.add(ExampleItems.TEST_ORE_ITEM.get());
+                })
+                .displaySection("textured_section" // // renders like "itemGroup.mod_id.textured_section", SectionStyle.textured(), output -> { // get the texture found at "assets/examplemod/textures/gui/tab_overlay/textured_section.png" and uses it for the section. Size has to be 158x16 for the banner
+                    output.add(ExampleItems.TEST_RUBY.get());
+                }); 
+
+    /** Call once from your mod's entrypoint, after Blocks/Items are registered. */
+    public static void registerCreativeModeTabs(IEventBus eventBus) {
+        TABS.register(eventBus);
+    }
+}
+          </code></pre>
       </section>
 
 
       <section id="model-generation">
         <h2>Model Datagen Helpers</h2>
-          <p>TBD</p>
-      </section>
+          <p>This is the easiest to understand addition with Amalgamation</p>
+
+          <p>To use the helper in your ModelGenerator (possibly "ModModelProvider") you just have to call ModelDatagenHelper with the following methods:</p>
+      
+          <ol>
+            <li>ModelDatagenHelper.simpleItem(itemModelGenerator, item)</li>
+            <p>This will generate a simple item model for your item. Like Diamonds, Emeralds, Iron Ingots and ect.</p>
+                        
+            <li>ModelDatagenHelper.holdingItem(itemModelGenerator, item)</li>
+            <p>This will generate a tool-like model for your item. Like Pickaxes, Swords, Shovels, ect.</p>
+
+            <li>ModelDatagenHelper.generate3DItem(itemModelGenerator, item)</li>
+            <p>This will generate a 3D model for your item. Unlike the other helpers, this one does not give you both models but you need to provide the name of the model file using "example_item_in_hand.json" in your item models directory.</p>
+          
+            <li>ModelDatagenHelper.trimmable[ArmorType](itemModelGenerator, item, equipmentAssetId, hasDyedLayers)</li>
+            <p>This will generate multiple models for your armor piece, which also does trims for you at the same time. Replace [ArmorType] with the appropriate armor type (e.g., Helmet, Chestplate, etc.).</p>
+                
+            <li>ModelDatagenHelper.sameSidesBlock(blockModelGenerator, block)</li>
+            <p>This will generate a block model with the same texture on all sides.</p>
+    
+          
+          </ol>
+
+          <p>Replacements:</p>
+          <ol>
+            <li>itemModelGenerator - The instance of the ItemModelGenerators to run all of it</li>
+            <li>blockModelGenerator - The instance of the BlockModelGenerators to run all of it</li>
+            <li>item - The item you want to generate the model for</li>
+            <li>block - The block you want to generate the model for</li>
+            <li>equipmentAssetId - The Material Key registered for the item</li>
+            <li>hasDyedLayers - A boolean indicating if the armor has dyed layers (true or false)</li>
+          </ol>
+       </section>
 
 
     </main>
