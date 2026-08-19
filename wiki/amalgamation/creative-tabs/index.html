@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aetherium - Aetherium Wiki</title>
+  <title>Custom Creative Mode Tabs - Amalgamation Wiki</title>
   <style>
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
       color: #ffffff;
       background: #1a1a1a;
-      --accent: #993dd6;
-      --accent-dim: #722bc4;
-      --accent-wash: rgba(140, 61, 214, 0.12);
+      --accent: #3dd6d0;
+      --accent-dim: #2bc4be;
+      --accent-wash: rgba(61, 214, 208, 0.12);
       --border: #2f2f2f;
       --panel: #212121;
       --panel-2: #262626;
@@ -81,7 +81,7 @@
       margin-bottom: .15rem;
     }
     .audience-group summary::-webkit-details-marker {display: none;}
-    .audience-group summary::after {content: "\25BE"; font-size: .7rem; color: var(--muted); transition: transform .15s ease;}
+    .audience-group summary::after {content: "\\25BE"; font-size: .7rem; color: var(--muted); transition: transform .15s ease;}
     .audience-group[open] summary::after {transform: rotate(180deg);}
     .audience-group summary .tag {
       font-size: .65rem; letter-spacing: .04em; color: #1a1a1a; background: var(--accent);
@@ -169,72 +169,139 @@
     .toc a {display: block; color: #b6b6b6; text-decoration: none; padding: .3rem 0; border-left: 2px solid var(--border); padding-left: .7rem;}
     .toc a:hover {color: var(--accent);}
 </style>
-  <link rel="icon" type="image/png" href="../../images/mythic_goose_studio.png">
+  <link rel="icon" type="image/png" href="../../../images/mythic_goose_studio.png">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <span class="logo-dot"></span>
-      <a href="./">Aetherium Wiki</a>
+      <a href="../">Amalgamation Wiki</a>
     </div>
-    <div class="version-select">Aetherium &#9662;</div>
+    <div class="version-select">Fabric + NeoForge</div>
   </header>
 
   <div class="page">
     <aside class="sidebar">
       <nav>
-        <a href="../" class="home-link">&larr; Return to Wiki Hub</a>
+        <a href="../../" class="home-link">&larr; Return to Wiki Hub</a>
         <hr class="divider">
 
-        <a href="./" class="top-link active">&#8962; Aetherium Home</a>
+        <a href="../" class="top-link">&#8962; Amalgamation Home</a>
 
-        <details class="audience-group">
+        <details class="audience-group" open>
           <summary>
-            <span class="label">For Users <span class="tag">Playing</span></span>
+            <span class="label">Documentation <span class="tag">Library</span></span>
           </summary>
           <div class="links">
-            <a href="users/overview/">Overview</a>
-            <a href="users/features/">Features</a>
-            <a href="users/modpack-support/">Modpack Support</a>
-          </div>
-        </details>
-
-        <details class="audience-group">
-          <summary>
-            <span class="label">For Developers <span class="tag">Modding</span></span>
-          </summary>
-          <div class="links">
-            <a href="developer/support/">Mod Developer Support</a>
-            <a href="developer/section-1/">Section 1: Setup & Applying Values</a>
-            <a href="developer/section-2/">Section 2: Energy Charged Tools & Armor</a>
-            <a href="developer/section-3/">Section 3: Coming Soon</a>
-            <a href="developer/section-4/">Section 4: Coming Soon</a>
-            <a href="developer/section-5/">Section 5: Additional Information</a>
+            <a href="../overview/">Overview</a>
+            <a href="../setup/">Adding to your Mod</a>
+            <a href="../registration/">Registration</a>
+            <a href="../creative-tabs/" class="active">Custom Creative Mode Tabs</a>
+            <a href="../model-generation/">Model Datagen Helpers</a>
           </div>
         </details>
       </nav>
     </aside>
     <main class="content">
       <nav class="breadcrumb">
-        <a href="../">Home</a>
+        <a href="../../">Home</a>
         <span class="sep">&rsaquo;</span>
-        <span class="current">Aetherium</span>
+        <a href="../">Amalgamation</a>
+        <span class="sep">&rsaquo;</span>
+        <span class="current">Custom Creative Mode Tabs</span>
       </nav>
-      <span class="version-badge">Version: Aetherium</span>
-      <h1>Aetherium</h1>
-      <p class="lead">A Fabric mod inspired by the idea of Equivalent Exchange, built with its own progression, balance, and economy. Adds a currency that can be made from items &amp; blocks to create different items or blocks.</p>
-      <p>Aetherium introduces its own interpretation of item transmutation for Fabric. Every item has an <strong>Aetherium Value</strong>, letting it be converted into a universal resource and back again &mdash; with a steeper progression than ProjectE.</p>
+      <span class="version-badge">Library &middot; Fabric &amp; NeoForge</span>
+      <h1>Custom Creative Mode Tabs</h1>
 
-      <ul class="index-list">
-        <li><a href="users/overview/"><span class="title">For Users &rarr;</span><span class="desc">What Aetherium is, its features, and how to configure it in a modpack.</span></a></li>
-        <li><a href="developer/support/"><span class="title">For Developers &rarr;</span><span class="desc">Add the dependency, register Aeth values, and build charged tools & armor.</span></a></li>
-      </ul>
+      <p>This cannot be explained in a simple form, so you will have to refer to the examples below. Each one shows how to make a colored section and a textured section.</p>
+
+      <h2 id="fabric-example">Fabric Example</h2>
+
+<pre><code>package com.example.examplemod.init;
+
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.CreativeModeTab;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionStyle;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionTabBuilder;
+
+public class ExampleCreativeModeTab {
+
+    public static CreativeModeTab EXAMPLE_TAB;
+
+    /** Call once from the testmod's entrypoint, after TestBlocks/TestItems are registered. */
+    public static void registerTestTab() {
+        SectionTabBuilder builder = SectionTabBuilder.create(
+                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "test_tab"))
+                .icon(ExampleItems.EXAMPLE_RUBY.get())
+                .title(Component.literal("Example Tab"))
+                .displaySection("colored_section" // renders like "itemGroup.mod_id.colored_section", SectionStyle.colored(0xFF97119f), output -> { // gets the color in hex and converts it to a color for the section (0xAARRGGBB)
+                    output.add(ExampleBlocks.TEST_ORE.get());
+                    output.add(ExampleItems.TEST_RUBY.get());
+                    output.add(ExampleItems.TEST_ORE_ITEM.get());
+                })
+                .displaySection("textured_section" // // renders like "itemGroup.mod_id.textured_section", SectionStyle.textured(), output -> { // get the texture found at "assets/examplemod/textures/gui/tab_overlay/textured_section.png" and uses it for the section. Size has to be 158x16 for the banner
+                    output.add(ExampleItems.TEST_RUBY.get());
+                });
+
+        EXAMPLE_TAB = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, builder.id(), builder.build());
+    }
+}
+</code></pre>
+
+      <h2 id="neoforge-example">NeoForge Example</h2>
+
+<pre><code>package com.example.examplemod.init;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionStyle;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionTabBuilder;
+
+public class ExampleCreativeModeTab {
+
+    private static final DeferredRegister<CreativeModeTab> TABS =
+        DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ExampleMod.MOD_ID);
+    public static DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB =
+        TABS.register("example_tab", () -> builder.build());
+
+        SectionTabBuilder builder = SectionTabBuilder.create(
+                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "test_tab"))
+                .icon(ExampleItems.EXAMPLE_RUBY.get())
+                .title(Component.literal("Example Tab"))
+                .displaySection("colored_section" // renders like "itemGroup.mod_id.colored_section", SectionStyle.colored(0xFF97119f), output -> { // gets the color in hex and converts it to a color for the section (0xAARRGGBB)
+                    output.add(ExampleBlocks.TEST_ORE.get());
+                    output.add(ExampleItems.TEST_RUBY.get());
+                    output.add(ExampleItems.TEST_ORE_ITEM.get());
+                })
+                .displaySection("textured_section" // // renders like "itemGroup.mod_id.textured_section", SectionStyle.textured(), output -> { // get the texture found at "assets/examplemod/textures/gui/tab_overlay/textured_section.png" and uses it for the section. Size has to be 158x16 for the banner
+                    output.add(ExampleItems.TEST_RUBY.get());
+                }); 
+
+    /** Call once from your mod's entrypoint, after Blocks/Items are registered. */
+    public static void registerCreativeModeTabs(IEventBus eventBus) {
+        TABS.register(eventBus);
+    }
+}
+</code></pre>
       <div class="page-nav">
-        <span></span>
-        <a class="next" href="users/overview/"><span class="dir">Next &rarr;</span><span class="title">Overview</span></a>
+        <a class="prev" href="../registration/"><span class="dir">&larr; Previous</span><span class="title">Registration</span></a>
+        <a class="next" href="../model-generation/"><span class="dir">Next &rarr;</span><span class="title">Model Datagen Helpers</span></a>
       </div>
     </main>
-
+    <aside class="toc">
+      <div class="toc-title">On this page</div>
+      <a href="#fabric-example">Fabric Example</a>
+      <a href="#neoforge-example">NeoForge Example</a>
+    </aside>
   </div>
 </body>
 </html>

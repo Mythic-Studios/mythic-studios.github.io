@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aetherium - Aetherium Wiki</title>
+  <title>Registration - Amalgamation Wiki</title>
   <style>
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
       color: #ffffff;
       background: #1a1a1a;
-      --accent: #993dd6;
-      --accent-dim: #722bc4;
-      --accent-wash: rgba(140, 61, 214, 0.12);
+      --accent: #3dd6d0;
+      --accent-dim: #2bc4be;
+      --accent-wash: rgba(61, 214, 208, 0.12);
       --border: #2f2f2f;
       --panel: #212121;
       --panel-2: #262626;
@@ -81,7 +81,7 @@
       margin-bottom: .15rem;
     }
     .audience-group summary::-webkit-details-marker {display: none;}
-    .audience-group summary::after {content: "\25BE"; font-size: .7rem; color: var(--muted); transition: transform .15s ease;}
+    .audience-group summary::after {content: "\\25BE"; font-size: .7rem; color: var(--muted); transition: transform .15s ease;}
     .audience-group[open] summary::after {transform: rotate(180deg);}
     .audience-group summary .tag {
       font-size: .65rem; letter-spacing: .04em; color: #1a1a1a; background: var(--accent);
@@ -169,69 +169,54 @@
     .toc a {display: block; color: #b6b6b6; text-decoration: none; padding: .3rem 0; border-left: 2px solid var(--border); padding-left: .7rem;}
     .toc a:hover {color: var(--accent);}
 </style>
-  <link rel="icon" type="image/png" href="../../images/mythic_goose_studio.png">
+  <link rel="icon" type="image/png" href="../../../images/mythic_goose_studio.png">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <span class="logo-dot"></span>
-      <a href="./">Aetherium Wiki</a>
+      <a href="../">Amalgamation Wiki</a>
     </div>
-    <div class="version-select">Aetherium &#9662;</div>
+    <div class="version-select">Fabric + NeoForge</div>
   </header>
 
   <div class="page">
     <aside class="sidebar">
       <nav>
-        <a href="../" class="home-link">&larr; Return to Wiki Hub</a>
+        <a href="../../" class="home-link">&larr; Return to Wiki Hub</a>
         <hr class="divider">
 
-        <a href="./" class="top-link active">&#8962; Aetherium Home</a>
+        <a href="../" class="top-link">&#8962; Amalgamation Home</a>
 
-        <details class="audience-group">
+        <details class="audience-group" open>
           <summary>
-            <span class="label">For Users <span class="tag">Playing</span></span>
+            <span class="label">Documentation <span class="tag">Library</span></span>
           </summary>
           <div class="links">
-            <a href="users/overview/">Overview</a>
-            <a href="users/features/">Features</a>
-            <a href="users/modpack-support/">Modpack Support</a>
-          </div>
-        </details>
-
-        <details class="audience-group">
-          <summary>
-            <span class="label">For Developers <span class="tag">Modding</span></span>
-          </summary>
-          <div class="links">
-            <a href="developer/support/">Mod Developer Support</a>
-            <a href="developer/section-1/">Section 1: Setup & Applying Values</a>
-            <a href="developer/section-2/">Section 2: Energy Charged Tools & Armor</a>
-            <a href="developer/section-3/">Section 3: Coming Soon</a>
-            <a href="developer/section-4/">Section 4: Coming Soon</a>
-            <a href="developer/section-5/">Section 5: Additional Information</a>
+            <a href="../overview/">Overview</a>
+            <a href="../setup/">Adding to your Mod</a>
+            <a href="../registration/" class="active">Registration</a>
+            <a href="../creative-tabs/">Custom Creative Mode Tabs</a>
+            <a href="../model-generation/">Model Datagen Helpers</a>
           </div>
         </details>
       </nav>
     </aside>
     <main class="content">
       <nav class="breadcrumb">
-        <a href="../">Home</a>
+        <a href="../../">Home</a>
         <span class="sep">&rsaquo;</span>
-        <span class="current">Aetherium</span>
+        <a href="../">Amalgamation</a>
+        <span class="sep">&rsaquo;</span>
+        <span class="current">Registration</span>
       </nav>
-      <span class="version-badge">Version: Aetherium</span>
-      <h1>Aetherium</h1>
-      <p class="lead">A Fabric mod inspired by the idea of Equivalent Exchange, built with its own progression, balance, and economy. Adds a currency that can be made from items &amp; blocks to create different items or blocks.</p>
-      <p>Aetherium introduces its own interpretation of item transmutation for Fabric. Every item has an <strong>Aetherium Value</strong>, letting it be converted into a universal resource and back again &mdash; with a steeper progression than ProjectE.</p>
+      <span class="version-badge">Library &middot; Fabric &amp; NeoForge</span>
+      <h1>Registration</h1>
 
-      <ul class="index-list">
-        <li><a href="users/overview/"><span class="title">For Users &rarr;</span><span class="desc">What Aetherium is, its features, and how to configure it in a modpack.</span></a></li>
-        <li><a href="developer/support/"><span class="title">For Developers &rarr;</span><span class="desc">Add the dependency, register Aeth values, and build charged tools & armor.</span></a></li>
-      </ul>
+      <p>TBD</p>
       <div class="page-nav">
-        <span></span>
-        <a class="next" href="users/overview/"><span class="dir">Next &rarr;</span><span class="title">Overview</span></a>
+        <a class="prev" href="../setup/"><span class="dir">&larr; Previous</span><span class="title">Adding to your Mod</span></a>
+        <a class="next" href="../creative-tabs/"><span class="dir">Next &rarr;</span><span class="title">Custom Creative Mode Tabs</span></a>
       </div>
     </main>
 
