@@ -215,83 +215,95 @@
 
       <p>This cannot be explained in a simple form, so you will have to refer to the examples below. Each one shows how to make a colored section and a textured section.</p>
 
-      <h2 id="fabric-example">Fabric Example</h2>
+      <h2 id="setup">Setup Tabs</h2>
 
 <pre><code>package com.example.examplemod.init;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Items;
+import org.mythic_goose.amalgamation.library.creative_tab_v1.CreativeTabRegistrar;
 import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionStyle;
 import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionTabBuilder;
+import com.example.examplemod.ExampleMod;
 
-public class ExampleCreativeModeTab {
+import java.util.function.Supplier;
 
-    public static CreativeModeTab EXAMPLE_TAB;
+public class ExampleCreativeTabs {
+    public static Supplier&lt;CreativeModeTab&gt; EXAMPLE_TAB;
 
-    /** Call once from the testmod's entrypoint, after TestBlocks/TestItems are registered. */
-    public static void registerTestTab() {
+    public static void init(CreativeTabRegistrar registrar) {
+        EXAMPLE_TAB = registrar.register("example", ExampleCreativeTabs::buildTab);
+    }
+
+    private static CreativeModeTab buildTab() {
         SectionTabBuilder builder = SectionTabBuilder.create(
-                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "test_tab"))
-                .icon(ExampleItems.EXAMPLE_RUBY.get())
-                .title(Component.literal("Example Tab"))
-                .displaySection("colored_section" // renders like "itemGroup.mod_id.colored_section", SectionStyle.colored(0xFF97119f), output -> { // gets the color in hex and converts it to a color for the section (0xAARRGGBB)
-                    output.add(ExampleBlocks.TEST_ORE.get());
-                    output.add(ExampleItems.TEST_RUBY.get());
-                    output.add(ExampleItems.TEST_ORE_ITEM.get());
+                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "example"))
+                .icon(Items.SNOWBALL)
+                .title(Component.translatable("itemGroup.example"))
+                .displaySection("example_section", SectionStyle.colored(0xaarrggbb, 0xffffffff /* Default */), output -> { // use your own color in hex (0xAARRGGBB), also in text color
+                    output.add(ExampleItems.EXAMPLE_ITEM_2.get());
+                    output.add(ExampleBlocks.EXAMPLE_BLOCK_2.get());
                 })
-                .displaySection("textured_section" // // renders like "itemGroup.mod_id.textured_section", SectionStyle.textured(), output -> { // get the texture found at "assets/examplemod/textures/gui/tab_overlay/textured_section.png" and uses it for the section. Size has to be 158x16 for the banner
-                    output.add(ExampleItems.TEST_RUBY.get());
-                });
+                .emptySection(output -> { // Defaults to the top without a section header (Only Available in v1.4.0+)
+                    output.add(ExampleItems.EXAMPLE_ITEM.get());
+                    output.add(ExampleBlocks.EXAMPLE_BLOCK.get());
+                })
+                ;
 
-        EXAMPLE_TAB = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, builder.id(), builder.build());
+        return builder.build();
     }
 }
 </code></pre>
 
-      <h2 id="neoforge-example">NeoForge Example</h2>
+      <h2 id="neoforge-example">NeoForge Register</h2>
 
-<pre><code>package com.example.examplemod.init;
+<pre><code>package com.example.example_mod;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionStyle;
-import org.mythic_goose.amalgamation.library.creative_tab_v1.SectionTabBuilder;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.mythic_goose.amalgamation.library.registry_v1.NeoForgeCreativeTabRegistrar;
+import com.example.example_mod.init.ExampleCreativeTabs;
 
-public class ExampleCreativeModeTab {
+@Mod(ExampleMod.MOD_ID)
+public class ExampleMod {
 
-    private static final DeferredRegister<CreativeModeTab> TABS =
-        DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ExampleMod.MOD_ID);
-    public static DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB =
-        TABS.register("example_tab", () -> builder.build());
+    public static final String MOD_ID = "examplemod";
 
-        SectionTabBuilder builder = SectionTabBuilder.create(
-                        Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "test_tab"))
-                .icon(ExampleItems.EXAMPLE_RUBY.get())
-                .title(Component.literal("Example Tab"))
-                .displaySection("colored_section" // renders like "itemGroup.mod_id.colored_section", SectionStyle.colored(0xFF97119f), output -> { // gets the color in hex and converts it to a color for the section (0xAARRGGBB)
-                    output.add(ExampleBlocks.TEST_ORE.get());
-                    output.add(ExampleItems.TEST_RUBY.get());
-                    output.add(ExampleItems.TEST_ORE_ITEM.get());
-                })
-                .displaySection("textured_section" // // renders like "itemGroup.mod_id.textured_section", SectionStyle.textured(), output -> { // get the texture found at "assets/examplemod/textures/gui/tab_overlay/textured_section.png" and uses it for the section. Size has to be 158x16 for the banner
-                    output.add(ExampleItems.TEST_RUBY.get());
-                }); 
+    public ExampleMod(IEventBus eventBus) {
+        ... // Other registration code
 
-    /** Call once from your mod's entrypoint, after Blocks/Items are registered. */
-    public static void registerCreativeModeTabs(IEventBus eventBus) {
-        TABS.register(eventBus);
+        var tabRegistrar = new NeoForgeCreativeTabRegistrar(ExampleMod.MOD_ID);
+        ExampleCreativeTabs.init(tabRegistrar);
+        tabRegistrar.registerToBus(eventBus);
     }
 }
 </code></pre>
+
+      <h2 id="fabric-example">Fabric Register</h2>
+
+<pre><code>package com.example.example_mod;
+
+import net.fabricmc.api.ModInitializer;
+import org.mythic_goose.amalgamation.library.registry_v1.FabricCreativeTabRegistrar;
+import com.example.example_mod.init.ExampleCreativeTabs;
+
+public class ExampleMod implements ModInitializer {
+
+    public static final String MOD_ID = "examplemod";
+
+    @Override
+    public void onInitialize() {
+        ... // Other registration code
+
+        ExampleCreativeTabs.init(new FabricCreativeTabRegistrar(ExampleMod.MOD_ID));
+    }
+}
+</code></pre>
+
       <div class="page-nav">
         <a class="prev" href="../registration/"><span class="dir">&larr; Previous</span><span class="title">Registration</span></a>
         <a class="next" href="../model-generation/"><span class="dir">Next &rarr;</span><span class="title">Model Datagen Helpers</span></a>
@@ -299,8 +311,9 @@ public class ExampleCreativeModeTab {
     </main>
     <aside class="toc">
       <div class="toc-title">On this page</div>
-      <a href="#fabric-example">Fabric Example</a>
-      <a href="#neoforge-example">NeoForge Example</a>
+      <a href="#setup">Setup</a>
+      <a href="#neoforge-example">NeoForge Registry</a>
+      <a href="#fabric-example">Fabric Registry</a>
     </aside>
   </div>
 </body>

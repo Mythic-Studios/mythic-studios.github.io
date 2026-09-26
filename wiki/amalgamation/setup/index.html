@@ -214,19 +214,11 @@
       <h1>Adding to your Mod</h1>
 
       <ol>
-        <li>Add Modrinth Maven to your repositories</li>
+        <li>Add the Amalgamation Maven repository to your repositories</li>
       </ol>
 <pre><code>repositories {
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter {
-            includeGroup "maven.modrinth"
-        }
+    maven {
+        url "https://dl.cloudsmith.io/public/mythic_goose/amalgamtion/maven/"
     }
 }</code></pre>
 
@@ -234,28 +226,30 @@
         <li>Add Amalgamation as a dependency using its latest version under dependencies (please go to Modrinth if you're after an older version)</li>
       </ol>
 <pre><code>dependencies {
-    implementation "maven.modrinth:amalgamation-library:<strong><span id="latest-version">coming_soon</span></strong>"
+    implementation 'org.mythic_goose.amalgamation:amalgamation-fabric-26.2:<span id="latest-version">0.0.0</span>'
 }</code></pre>
 
 <script>
 (async function () {
+  const ids = ["latest-version", "latest-version-inline", "latest-version-text"];
+
   try {
-    const res = await fetch("https://api.modrinth.com/v2/project/amalgamation-library/version", {
-      headers: {
-        // Modrinth asks for a distinct User-Agent, but browsers can't override this header client-side,
-        // so this works fine as-is for a public GET from a browser context.
-      }
-    });
+    const res = await fetch("https://api.modrinth.com/v2/project/amalgamation/version");
     if (!res.ok) throw new Error("Modrinth API error: " + res.status);
+
     const versions = await res.json();
     if (!versions.length) throw new Error("No versions found");
 
-    // versions[0] is the most recently published version
-    const latest = versions[0].version_number;
+    // Don't rely on API ordering — sort explicitly by publish date, newest first
+    versions.sort((a, b) => new Date(b.date_published) - new Date(a.date_published));
 
-    document.getElementById("latest-version").textContent = latest;
-    document.getElementById("latest-version-inline").textContent = latest;
-    document.getElementById("latest-version-text").textContent = latest;
+    // Strip a trailing -fabric or -neoforge suffix, e.g. "1.4.1-fabric" -> "1.4.1"
+    const latest = versions[0].version_number.replace(/-(fabric|neoforge)$/i, "");
+
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = latest;
+    });
   } catch (err) {
     console.error("Failed to fetch latest Amalgamation version:", err);
     // Leave the placeholders as-is on failure
@@ -263,14 +257,19 @@
 })();
 </script>
 
-      <p>Note: There is both a Fabric and a NeoForge version available. So replace '+fabric' or '+neoforge' with the appropriate suffix of your target modloader.</p>
+      <p>Note: There is both a Fabric and a NeoForge version available. So replace 'amalgamation-fabric-26.2' or 'amalgamation-neoforge-26.2' with the appropriate loader of your target modloader. If you are using a multi-loader setup, you will need to include both versions as dependencies as well as 'amalgamation-common-26.2'.</p>
 
       <ol start="3">
         <li>Applying your MOD_ID to the Registry Classes</li>
       </ol>
-      <p>In order to use Amalgamation, you will need to apply your MOD_ID to all the registry classes. This is done by calling the following method in your main mod class:</p>
-<pre><code>ModRegistry.MOD_ID = "your_mod_id";</code></pre>
-      <p>Note: This should be done in the constructor of your main mod class.</p>
+      <p>In order to use Amalgamation, you will need to apply your MOD_ID to all the registry classes and attachment and registrationBackend. This is done by calling the following methods in your main mod class:</p>
+<pre><code>
+NeoForgeRegistrationBackend.init(eventBus);
+NeoForgeAttachmentHelper.init(MOD_ID, eventBus);
+DeferredRegister.setModId("your_mod_id");
+</code></pre>
+      <p>Note: This should be done in the constructor of your main mod class & BEFORE EVERYTHING ELSE</p>
+
       <div class="page-nav">
         <a class="prev" href="../overview/"><span class="dir">&larr; Previous</span><span class="title">Overview</span></a>
         <a class="next" href="../registration/"><span class="dir">Next &rarr;</span><span class="title">Registration</span></a>

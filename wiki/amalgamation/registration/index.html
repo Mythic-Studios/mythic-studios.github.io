@@ -213,7 +213,66 @@
       <span class="version-badge">Library &middot; Fabric &amp; NeoForge</span>
       <h1>Registration</h1>
 
-      <p>TBD</p>
+      <p>When ever you want to register new objects in your mod, you can use the registration helpers provided by Amalgamation.</p>
+
+      <h2 id="items">Items</h2>
+      <p>For items you would do this. Then Call it in your initialization method in your main mod class (Designed in 26.2)</p>
+<pre><code>package com.example.example_mod.init;
+
+import net.minecraft.world.item.Item;
+import org.mythic_goose.amalgamation.library.registry_v1.*;
+
+public class ModItems extends ItemRegistry {
+
+    public static RegistryEntry&lt;Item&gt; EXAMPLE_ITEM;
+    public static RegistryEntry&lt;Item&gt; SPECIAL_EXAMPLE_ITEM;
+
+    public static RegistryEntry&lt;BlockItem&gt; EXAMPLE_BLOCK;
+    public static RegistryEntry&lt;BlockItem&gt; EXAMPLE_MANY_BLOCK;
+
+    public static void init() {
+
+        EXAMPLE_ITEM = registerItem("example_item", Item::new);
+        SPECIAL_EXAMPLE_ITEM = registerItem("special_example_item", properties ->
+             new SpecialExampleItem(properties, exampleIntValue, "exampleStringValue", exampleBooleanValue));
+
+        EXAMPLE_BLOCK = registerBlockItem("example_block", ModBlocks.EXAMPLE_BLOCK);
+        EXAMPLE_MANY_BLOCK = registerBlockItemWithCustomStackSize("example_many_block",
+             ModBlocks.EXAMPLE_MANY_BLOCK, stackSize);  // stackSize between 1 and 100
+    }
+}</code></pre>
+      
+      <h2 id="blocks">Blocks</h2>
+      <p>For blocks you would do this and provide a block item in the ModItems Class. Then Call it in your initialization method in your main mod class (Designed in 26.2)</p>
+
+<pre><code>package com.example.example_mod.init;
+
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import org.mythic_goose.amalgamation.library.registry_v1.*;
+
+public class ModBlocks extends BlockRegistry {
+
+    public static RegistryEntry&lt;Block&gt; EXAMPLE_BLOCK;
+    public static RegistryEntry&lt;Block&gt; EXAMPLE_MANY_BLOCK;
+
+    public static void init() {
+
+        EXAMPLE_BLOCK = registerBlock("example_block", properties ->
+                new Block(properties.mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5f, 6.0f))); // Example Stone Block
+
+        EXAMPLE_MANY_BLOCK = registerBlock("example_many_block", properties ->
+                new Block(properties.mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5f, 6.0f))); // Example Stone Block
+
+    }
+}</code></pre>
+
       <div class="page-nav">
         <a class="prev" href="../setup/"><span class="dir">&larr; Previous</span><span class="title">Adding to your Mod</span></a>
         <a class="next" href="../creative-tabs/"><span class="dir">Next &rarr;</span><span class="title">Custom Creative Mode Tabs</span></a>
